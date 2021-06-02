@@ -87,12 +87,12 @@ do
 	ntest=`expr $((i * 3)) - 0`
 	perc=$((ntest * 100 / tot_test)) 
 	echo "iteration $i test 100Ns [OK] [$perc%]"
-	sh power_save.sh
+	sh powersave.sh
 	sleep 1m
 	sh $governor.sh
  	true $(( i++ ))
 done
 echo "Done"
-sh power_save.sh
+sh powersave.sh
 cat $RES_PATH/out.txt
 
