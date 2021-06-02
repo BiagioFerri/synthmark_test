@@ -25,7 +25,7 @@ example:
 sh synthmark_bench.sh performance_with_idle 5 
 ```
 ## Trace
-Tracing what happens during specific synthmark tests in terms of scheduling, cpu_idles and cpu_frequency. Traces are made by using built-in android tracing. By opening with perfetto-ui (at this link:  https://ui.perfetto.dev/#!/) the traces can be analysed.
+Tracing what happens during specific synthmark tests in terms of scheduling, cpu_idles and cpu_frequency. Traces are made by using built-in android tracing. By opening with [perfetto-ui](https://ui.perfetto.dev/#!/) the traces can be analysed.
 The test checked are (in performance mode all idle states are disabled except for state0):
 - [performance governor 5s](https://github.com/BiagioFerri/synthmark_test/blob/main/traces/trace-db845c-AOSP.MASTER-performance_5s.perfetto-trace)
 - [performance governor 100s](https://github.com/BiagioFerri/synthmark_test/blob/main/traces/trace-db845c-AOSP.MASTER-performance_100s.perfetto-trace)
