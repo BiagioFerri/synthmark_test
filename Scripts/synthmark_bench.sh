@@ -122,6 +122,7 @@ do
 	perc=$((ntest * 100 / tot_test)) 
 	echo "Iteration $i [OK] [$perc%]"
 	sh powersave.sh
+	echo "Sleeping 1m in powersave"
 	sleep 1m
 	sh $governor.sh
  	true $(( i++ ))
