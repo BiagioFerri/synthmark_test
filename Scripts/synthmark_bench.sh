@@ -1,4 +1,8 @@
 #!/bin/sh
+if ! [ $(id -u) = 0 ]; then
+   echo "The script need to be run as root." >&2
+   exit 1
+fi
 RES_PATH=/storage/self/primary/Documents/results
 TRASH_PATH=/storage/self/primary/Documents/trash
 
