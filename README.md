@@ -18,11 +18,11 @@ All commands require root privilege
 ### Script to run synthmark benchmark
 Command requires root privilege and previous scripts to change governor
 ```command
-sh synthmark_bench.sh [ performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle ] [ iteration ] 
+sh synthmark_bench.sh [ performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle ] [ iteration ] [ -N(value) optional ] [ -m(l|r|s) optional] 
 ```
 Example:
 ```command
-sh synthmark_bench.sh performance_with_idle 5 
+sh synthmark_bench.sh performance_with_idle 5 -N100 -ms
 ```
 ## Trace
 Tracing what happens during specific synthmark tests in terms of scheduling, cpu_idles and cpu_frequency. Traces are made by using built-in android tracing. By opening with [perfetto-ui](https://ui.perfetto.dev/#!/) the traces can be analysed.
