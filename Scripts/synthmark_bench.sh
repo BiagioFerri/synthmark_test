@@ -1,29 +1,56 @@
 #!/bin/sh
+
 if ! [ $(id -u) = 0 ]; then
    echo "The script need to be run as root." >&2
    exit 1
 fi
+
 RES_PATH=/storage/self/primary/Documents/results
 TRASH_PATH=/storage/self/primary/Documents/trash
 
 governor=$1
 max=$2
-usage="usage: sh synthmark_bench.sh [ performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle ] [ iteration ]"
+N=$3
+m=$4
+usage="Usage: sh synthmark_bench.sh [ performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle ] [ iteration ] [ -N(value) optional ] [ -m(l|r|s) optional] \nExample: sh synthmark_bench.sh performance_with_idle 5 -N100 -ms"
 case $governor in
     performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle) echo Start with $governor test;;
     *)             echo "param error, $usage"; exit;
 esac
 
+if ! [ -f "$governor.sh" ]; then
+    echo "$governor.sh no such file, please insert it in the same path of this script"
+    exit
+fi
+
+if ! [ -f "powersave.sh" ]; then
+    echo "powersave.sh no such file, please insert it in the same path of this script"
+    exit
+fi
+
 case $max in
 	1|2|3|4|5|6|7|8|9|10) echo number iteration: $max;;
-	*)	echo "iteration param error [1..10]"; exit; 
+	*)	echo "Iteration param error [1..10]"; exit; 
 esac
 
+if ! [[ $N == "-N"* || $N == "" ]]; then
+  echo $usage
+  exit
+fi
 
+case $m in
+	-mr|-ml|-ms|"");;
+	*)	echo $usage; exit;
+esac
 
 sh $governor.sh
-echo "start test in $governor mode" >> $RES_PATH/out.txt
+echo "Start test in $governor mode" >> $RES_PATH/out.txt
 echo -n "\n" >> $RES_PATH/out.txt
+
+if [ -f "$RES_PATH/out.txt" ]; then
+    rm $RES_PATH/out.txt
+    echo "Initialized file results"
+fi
 
 i=1
 tot_test=$((max * 3))
@@ -31,7 +58,8 @@ max=`expr $max + 1`
 while [ $i -lt $max ]
 do
 	start=`date +%s`
-	./synthmark -tl -n5 -N100 -b64 > $TRASH_PATH/5sN.txt
+	echo "./synthmark -tl -n5 $N $m"
+	./synthmark -tl -n5 $N $m > $TRASH_PATH/5sN.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
@@ -48,11 +76,12 @@ do
 
 	ntest=`expr $((i * 3)) - 2`
 	perc=$((ntest * 100 / tot_test)) 
-	echo "iteration $i test 5Ns [OK] [$perc%]"
+	echo "Iteration $i [OK] [$perc%]"
 	sleep 1m
 
 	start=`date +%s`
-	./synthmark -tl -n50 -N100 -b64 > $TRASH_PATH/50sN.txt
+	echo "./synthmark -tl -n50 $N $m"
+	./synthmark -tl -n50 $N $m > $TRASH_PATH/50sN.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
@@ -69,11 +98,12 @@ do
 
 	ntest=`expr $((i * 3)) - 1`
 	perc=$((ntest * 100 / tot_test)) 
-	echo "iteration $i test 50Ns [OK] [$perc%]"
+	echo "Iteration $i [OK] [$perc%]"
 	sleep 1m
 
 	start=`date +%s`
-	./synthmark  -tl -n100 -N100 -b64 > $TRASH_PATH/100sN.txt
+	echo "./synthmark -tl -n100 $N $m "
+	./synthmark -tl -n100 $N $m> $TRASH_PATH/100sN.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
@@ -90,7 +120,7 @@ do
 	
 	ntest=`expr $((i * 3)) - 0`
 	perc=$((ntest * 100 / tot_test)) 
-	echo "iteration $i test 100Ns [OK] [$perc%]"
+	echo "Iteration $i [OK] [$perc%]"
 	sh powersave.sh
 	sleep 1m
 	sh $governor.sh
@@ -99,4 +129,3 @@ done
 echo "Done"
 sh powersave.sh
 cat $RES_PATH/out.txt
-
