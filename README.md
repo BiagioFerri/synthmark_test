@@ -16,7 +16,7 @@ All commands require root privilege
 - ```sh powersave.sh``` set powersave as governor and enable all idle states
 
 ### Script to run synthmark benchmark
-Command requires root privilege and previous scripts to change governor
+Command requires root privilege and previous scripts to change governor (At the end of the test, the governor is set in powersave)
 ```command
 sh synthmark_bench.sh [ performance_with_idle|performance_without_idle|schedutil_with_idle|schedutil_without_idle ] [ iteration ] [ -N(value) optional ] [ -m(l|r|s) optional] 
 ```
