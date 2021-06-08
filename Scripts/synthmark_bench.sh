@@ -59,14 +59,14 @@ while [ $i -lt $max ]
 do
 	start=`date +%s`
 	echo "./synthmark -tl -n5 $N $m"
-	./synthmark -tl -n5 $N $m > $TRASH_PATH/5sN.txt
+	./synthmark -tl -n5 $N $m > $TRASH_PATH/5n$m$N.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
 	echo -n $runtime >> $RES_PATH/out.txt
 	echo -n "  " >> $RES_PATH/out.txt
-	tail -n15 $TRASH_PATH/5sN.txt > $RES_PATH/5sN.txt
-	echo -n "5sN " >> $RES_PATH/out.txt
+	tail -n15 $TRASH_PATH/5n$m$N.txt > $RES_PATH/5n$m$N.txt
+	echo -n "5n $m $N " >> $RES_PATH/out.txt
 	echo -n $(head -n4 $RES_PATH/5sN.txt | tail -n1 | tail -c$(head -n4 $RES_PATH/5sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
 	echo -n " " >> $RES_PATH/out.txt
 	echo -n $(head -n5 $RES_PATH/5sN.txt | tail -n1 | tail -c$(head -n5 $RES_PATH/5sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
@@ -81,14 +81,14 @@ do
 
 	start=`date +%s`
 	echo "./synthmark -tl -n50 $N $m"
-	./synthmark -tl -n50 $N $m > $TRASH_PATH/50sN.txt
+	./synthmark -tl -n50 $N $m > $TRASH_PATH/50n$m$N.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
 	echo -n $runtime >> $RES_PATH/out.txt
 	echo -n "  " >> $RES_PATH/out.txt
-	tail -n15 $TRASH_PATH/50sN.txt > $RES_PATH/50sN.txt
-	echo -n "50sN " >> $RES_PATH/out.txt
+	tail -n15 $TRASH_PATH/50n$m$N.txt > $RES_PATH/50n$m$N.txt
+	echo -n "50n $m $N " >> $RES_PATH/out.txt
 	echo -n $(head -n4 $RES_PATH/50sN.txt | tail -n1 | tail -c$(head -n4 $RES_PATH/50sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
 	echo -n " " >> $RES_PATH/out.txt
 	echo -n $(head -n5 $RES_PATH/50sN.txt | tail -n1 | tail -c$(head -n5 $RES_PATH/50sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
@@ -103,14 +103,14 @@ do
 
 	start=`date +%s`
 	echo "./synthmark -tl -n100 $N $m "
-	./synthmark -tl -n100 $N $m> $TRASH_PATH/100sN.txt
+	./synthmark -tl -n100 $N $m> $TRASH_PATH/100n$m$N.txt
 	end=`date +%s`
 	runtime=$((end-start))
 	echo -n "Duration " >> $RES_PATH/out.txt
 	echo -n $runtime >> $RES_PATH/out.txt
 	echo -n "  " >> $RES_PATH/out.txt
-	tail -n15 $TRASH_PATH/100sN.txt > $RES_PATH/100sN.txt
-	echo -n "100sN " >> $RES_PATH/out.txt
+	tail -n15 $TRASH_PATH/100n$m$N.txt > $RES_PATH/100n$m$N.txt
+	echo -n "100n $m $N " >> $RES_PATH/out.txt
 	echo -n $(head -n4 $RES_PATH/100sN.txt | tail -n1 | tail -c$(head -n4 $RES_PATH/100sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
 	echo -n " " >> $RES_PATH/out.txt
 	echo -n $(head -n5 $RES_PATH/100sN.txt | tail -n1 | tail -c$(head -n5 $RES_PATH/100sN.txt | tail -n1 | expr $(wc -c) - 23)) >> $RES_PATH/out.txt
@@ -122,7 +122,7 @@ do
 	perc=$((ntest * 100 / tot_test)) 
 	echo "Iteration $i [OK] [$perc%]"
 	sh powersave.sh
-	echo "Sleeping 1m in powersave"
+	echo "sleeping 1m in powersave"
 	sleep 1m
 	sh $governor.sh
  	true $(( i++ ))
